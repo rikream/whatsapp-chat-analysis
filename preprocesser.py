@@ -3,28 +3,39 @@ import pandas as pd
 
 
 def preprocess(data):
-    pattern = "\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s"
+    # 🔧 REQUIRED: normalize mobile unicode characters
+    data = data.replace('\u202f', ' ').replace('\u200e', '')
+
+    # 🔧 REQUIRED: support both '-' and '–' (mobile WhatsApp uses –)
+    pattern = r"\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[-–]\s"
+
     messages = re.split(pattern, data)[1:]
     dates = re.findall(pattern, data)
 
     df = pd.DataFrame({'user_msg': messages, 'msg_dates': dates})
-    df['msg_dates'] = pd.to_datetime(df['msg_dates'], format='%d/%m/%Y, %H:%M - ')
+    df['msg_dates'] = pd.to_datetime(
+        df['msg_dates'],
+        format='%d/%m/%Y, %H:%M - ',
+        errors='coerce'
+    )
 
     users = []
-    messages = []
+    messages_clean = []
+
     for message in df['user_msg']:
         entry = re.split('([\w\W]+?):\s', message)
         if entry[1:]:
             users.append(entry[1])
-            messages.append(entry[2])
+            messages_clean.append(entry[2])
         else:
             users.append('group_notification')
-            messages.append(entry[0])
+            messages_clean.append(entry[0])
 
     df['users'] = users
-    df['messages'] = messages
+    df['messages'] = messages_clean
     df.drop(columns=['user_msg'], inplace=True)
 
+    # ---------- Date-time features ----------
     df['year'] = df['msg_dates'].dt.year
     df['month_num'] = df['msg_dates'].dt.month
     df['month'] = df['msg_dates'].dt.month_name()
@@ -34,6 +45,7 @@ def preprocess(data):
     df['hour'] = df['msg_dates'].dt.hour
     df['minutes'] = df['msg_dates'].dt.minute
 
+    # ---------- Period column ----------
     period = []
     for hour in df['hour']:
         start = str(hour).zfill(2)
