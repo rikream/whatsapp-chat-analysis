@@ -4,35 +4,35 @@ A multipage **Streamlit web application** to analyze WhatsApp chat exports and v
 
 ---
 
-## 🚀 Features
+##  Features
 
-- 📌 **Chat Overview**
+-  **Chat Overview**
   - Total messages
   - Total words
   - Media shared
   - Links shared
   - Most active users
 
-- 🔥 **Activity Analysis**
+-  **Activity Analysis**
   - Monthly timeline
   - Daily timeline
   - Most busy day & month
   - Weekly activity heatmap (Day × Hour)
 
-- ☁️ **WordCloud**
+-  **WordCloud**
   - Word cloud visualization
   - Most common words (after removing stopwords)
 
-- 😀 **Emoji Analysis**
+- **Emoji Analysis**
   - Emoji frequency table
   - Top emojis pie chart
 
-- 👤 **User-wise & Overall Analysis**
+-  **User-wise & Overall Analysis**
   - Filter insights for individual users or entire group
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Python**
 - **Streamlit**
@@ -64,7 +64,7 @@ WhatsuppChat-Analysis/
 
 ---
 
-## 📥 How to Use
+##  How to Use
 
 ### 1️⃣ Export WhatsApp Chat
 - Open WhatsApp
@@ -92,7 +92,7 @@ Push project to GitHub
 Go to 👉 https://share.streamlit.io
 Select repository & app.py
 
-Deploy 🚀
+Deploy 
 📌 Notes
 Group notifications are excluded from text analysis
 Media messages (<Media omitted>) are ignored
